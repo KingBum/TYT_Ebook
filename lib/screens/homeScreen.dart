@@ -58,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
+                  backgroundColor: Colors.blue
                 ),
               ),
               body: Stack(

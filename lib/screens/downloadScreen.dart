@@ -19,164 +19,44 @@ class _DownloadScreenState extends State<DownloadScreen> {
         children: [
           SafeArea(
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Image.asset(
-                            Helper.getAssetName("Navbar.png", "virtual")),
-                        Image.asset(
-                          Helper.getAssetName("Search.png", "virtual"),
-                          width: 30,
-                          height: 30,
-                          color: AppColor.secondary,)
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: SizedBox(
-                        width: 150,
-                        child: DropdownButton(
-                          value: "current location",
-                          items: [
-                            DropdownMenuItem(
-                              child: Text("Work Place"),
-                              value: "current location",
-                            ),
-                          ],
-                          icon: Image.asset(
-                            Helper.getAssetName(
-                                "dropdown_filled.png", "virtual"),
-                          ),
-                          style: Helper.getTheme(context).headline4,
-                          onChanged: (_) {},
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                    ),
-                    child: Text("Choose your delicous meal"),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Popular Restaurants",
-                          style: Helper.getTheme(context).headline5,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                    ),
-
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          Wrap(
-                            spacing: 20.0, // gap between adjacent chips
-                            runSpacing: 20.0, // gap between lines
-                            children: <Widget>[
-                              CategoryCard(
-                                image: Image.asset(
-                                  Helper.getAssetName("hamburger2.jpg", "real"),
-                                  fit: BoxFit.cover,
-                                ),
-                                name: "Offers",
-                                price: "50",
-                              ),
-                              CategoryCard(
-                                image: Image.asset(
-                                  Helper.getAssetName("rice2.jpg", "real"),
-                                  fit: BoxFit.cover,
-                                ),
-                                name: "Sri Lankan",
-                                price: "70",
-                              ),
-
-                              CategoryCard(
-                                image: Image.asset(
-                                  Helper.getAssetName("pizza.jpg", "real"),
-                                  fit: BoxFit.cover,
-                                ),
-                                name: "Spiza",
-                                price: "70",
-                              ),
-                              CategoryCard(
-                                image: Image.asset(
-                                  Helper.getAssetName("pizza2.jpg", "real"),
-                                  fit: BoxFit.cover,
-                                ),
-                                name: "Pizza",
-                                price: "70",
-                              ),
-                              CategoryCard(
-                                image: Image.asset(
-                                  Helper.getAssetName("pizza3.jpg", "real"),
-                                  fit: BoxFit.cover,
-                                ),
-                                name: "Pizza KB",
-                                price: "90",
-                              ),
-                            ],
-                          ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  width: Helper.getScreenWidth(context),
+                  height: Helper.getScreenHeight(context),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Truyện Trên Thiết Bị - Offline", style: TextStyle(fontSize: 24),),
+                      SizedBox(height: 12,),
+                      Row(
+                        children: [
+                          Text("Đọc Gần Đây", style: TextStyle(fontSize: 16),),
+                          Spacer(),
+                          Icon(Icons.arrow_forward)
                         ],
                       ),
-                    ),
+                      SizedBox(height: 16,),
+                      Row(
+                        children: [
+                          Text("Yêu Thích Gần Đây", style: TextStyle(fontSize: 16),),
+                          Spacer(),
+                          Icon(Icons.arrow_forward)
+                        ],
+                      ),
+                      SizedBox(height: 16,),
+                      Row(
+                        children: [
+                          Text("Tải Gần Đây - Đọc Offline", style: TextStyle(fontSize: 16),),
+                          Spacer(),
+                          Icon(Icons.arrow_forward)
+                        ],
+                      ),
+                      SizedBox(height: 16,),
+                    ],
                   ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Popular Restaurants",
-                          style: Helper.getTheme(context).headline5,
-                        ),
-                        TextButton(onPressed: () {}, child: Text("View all"))
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
+                ),
+              )
             ),
           ),
           Positioned(

@@ -12,297 +12,81 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  List<String> widgetList = ['Cổ Đại', 'Điền Văn', 'Nữ Cường', 'Nữ Phụ', 'Trinh Thám', 'Dị Năng', 'Dị Giới', 'Võng Du', 'Linh Dị', 'Trọng Sinh', 'Quân Sự', 'Lịch Sử', 'Thám Hiểm', 'Huyền Huyễn'
+    , 'Khoa Huyễn', 'Hệ Thống',
+    'Tiểu Thuyết',
+    'Phương tây',
+    'Việt Nam',
+    'Đoản Văn',
+    'Khác',
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          Scaffold(
+            body: Stack(
                 children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Image.asset(
-                            Helper.getAssetName("Navbar.png", "virtual")),
-                        Image.asset(
-                          Helper.getAssetName("Search.png", "virtual"),
-                          width: 30,
-                          height: 30,
-                          color: AppColor.secondary,)
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: SizedBox(
-                        width: 150,
-                        child: DropdownButton(
-                          value: "current location",
-                          items: [
-                            DropdownMenuItem(
-                              child: Text("Work Place"),
-                              value: "current location",
-                            ),
-                          ],
-                          icon: Image.asset(
-                            Helper.getAssetName(
-                                "dropdown_filled.png", "virtual"),
-                          ),
-                          style: Helper.getTheme(context).headline4,
-                          onChanged: (_) {},
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                    ),
-                    child: Text("Choose your delicous meal"),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Popular Restaurants",
-                          style: Helper.getTheme(context).headline5,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                    ),
-
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          Wrap(
-                            spacing: 20.0, // gap between adjacent chips
-                            runSpacing: 20.0, // gap between lines
-                            children: <Widget>[
-                              CategoryCard(
-                                image: Image.asset(
-                                  Helper.getAssetName("hamburger2.jpg", "real"),
-                                  fit: BoxFit.cover,
-                                ),
-                                name: "Offers",
-                                price: "50",
-                              ),
-                              CategoryCard(
-                                image: Image.asset(
-                                  Helper.getAssetName("rice2.jpg", "real"),
-                                  fit: BoxFit.cover,
-                                ),
-                                name: "Sri Lankan",
-                                price: "70",
-                              ),
-
-                              CategoryCard(
-                                image: Image.asset(
-                                  Helper.getAssetName("pizza.jpg", "real"),
-                                  fit: BoxFit.cover,
-                                ),
-                                name: "Spiza",
-                                price: "70",
-                              ),
-                              CategoryCard(
-                                image: Image.asset(
-                                  Helper.getAssetName("pizza2.jpg", "real"),
-                                  fit: BoxFit.cover,
-                                ),
-                                name: "Pizza",
-                                price: "70",
-                              ),
-                              CategoryCard(
-                                image: Image.asset(
-                                  Helper.getAssetName("pizza3.jpg", "real"),
-                                  fit: BoxFit.cover,
-                                ),
-                                name: "Pizza KB",
-                                price: "90",
-                              ),
-                            ],
-                          ),
+                  Positioned(
+                    height: 120,
+                    width: Helper.getScreenWidth(context),
+                    top: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          Text("TYT", style: TextStyle(fontSize: 24),),
+                          Spacer(),
+                          Icon(Icons.filter_list, size: 28,)
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Popular Restaurants",
-                          style: Helper.getTheme(context).headline5,
-                        ),
-                        TextButton(onPressed: () {}, child: Text("View all"))
-                      ],
+                  Container(
+                    width: MediaQuery.of(context).size.height,
+                    height: double.infinity,
+                    child: Padding(
+                      padding: EdgeInsets.all(60.0),
+                      child:
+                      GridView.count(
+                        crossAxisCount: 2,
+                        childAspectRatio: 3,
+                        controller: new ScrollController(keepScrollOffset: false),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        // Generate 100 widgets that display their index in the List.
+                        children: widgetList.map((String value) {
+                          return new Container(
+                            color: AppColor.blue,
+                            margin: new EdgeInsets.all(4.0),
+                            child: new Center(
+                              child: new Text(
+                                value,
+                                style: new TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: CustomNavBar(
+                        home: false,
+                        menu: true,
+                        profile: false,
+                        search: false,
+                        download: false,
+                      )),
+                ]
             ),
-          ),
-          Positioned(
-              bottom: 0,
-              left: 0,
-              child: CustomNavBar(
-                home: false,
-                menu: true,
-                profile: false,
-                search: false,
-                download: false,
-              )),
-        ],
-      ),
-    );
-  }
-}
-
-
-class CategoryCard extends StatelessWidget {
-  const CategoryCard(
-      {Key? key,
-        required Image image,
-        required String name,
-        required String price})
-      : _image = image,
-        _name = name,
-        _price = price,
-        super(key: key);
-
-  final String _name;
-  final Image _image;
-  final String _price;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      height: MediaQuery.of(context).size.height/2.0,
-      decoration: BoxDecoration(
-        border: Border.all(width: 3.0),
-        borderRadius: BorderRadius.all(
-            Radius.circular(20.0) //                 <--- border radius here
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(
-                  Icons.radio_button_checked,
-                  color: AppColor.orange,
-                ),
-                Icon(
-                  Icons.favorite,
-                  color: AppColor.secondary,
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                width: 160,
-                height: 160,
-                child: _image,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: Text(
-              _name,
-              style: Helper.getTheme(context)
-                  .headline4
-                  ?.copyWith(color: AppColor.primary, fontSize: 16),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '\$$_price',
-                  style: Helper.getTheme(context)
-                      .headline4
-                      ?.copyWith(color: AppColor.orange, fontSize: 24),
-                ),
-                SizedBox(width: 50),
-                Icon(
-                  Icons.add_circle_outline,
-                  color: AppColor.orange,
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 20,
           ),
         ],
       ),

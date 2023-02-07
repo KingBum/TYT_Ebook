@@ -19,6 +19,13 @@ class _MenuScreenState extends State<MenuScreen> {
     'Việt Nam',
     'Đoản Văn',
     'Khác',
+    'Khác','Cổ Đại', 'Điền Văn', 'Nữ Cường', 'Nữ Phụ', 'Trinh Thám', 'Dị Năng', 'Dị Giới', 'Võng Du', 'Linh Dị', 'Trọng Sinh', 'Quân Sự', 'Lịch Sử', 'Thám Hiểm', 'Huyền Huyễn'
+    , 'Khoa Huyễn', 'Hệ Thống',
+    'Tiểu Thuyết',
+    'Phương tây',
+    'Việt Nam',
+    'Đoản Văn',
+    'Khác',
   ];
   @override
   Widget build(BuildContext context) {
@@ -44,34 +51,37 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.height,
-                    height: double.infinity,
-                    child: Padding(
-                      padding: EdgeInsets.all(60.0),
-                      child:
-                      GridView.count(
-                        crossAxisCount: 2,
-                        childAspectRatio: 3,
-                        controller: new ScrollController(keepScrollOffset: false),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        // Generate 100 widgets that display their index in the List.
-                        children: widgetList.map((String value) {
-                          return new Container(
-                            color: AppColor.blue,
-                            margin: new EdgeInsets.all(4.0),
-                            child: new Center(
-                              child: new Text(
-                                value,
-                                style: new TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.height,
+                      height: double.infinity,
+                      child: Padding(
+                        padding: EdgeInsets.all(60.0),
+                        child:
+                        GridView.count(
+                          crossAxisCount: 2,
+                          childAspectRatio: 3,
+                          controller: new ScrollController(keepScrollOffset: false),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          // Generate 100 widgets that display their index in the List.
+                          children: widgetList.map((String value) {
+                            return new Container(
+                              color: AppColor.blue,
+                              margin: new EdgeInsets.all(4.0),
+                              child: new Center(
+                                child: new Text(
+                                  value,
+                                  style: new TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                   ),

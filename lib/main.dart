@@ -1,3 +1,4 @@
+import 'package:ebook_tyt/screens/detailBookScreen.dart';
 import 'package:flutter/material.dart';
 import './screens/splashScreen.dart';
 import './screens/homeScreen.dart';
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
         MenuScreen.routeName: (context) => MenuScreen(),
         ProfileScreen.routeName: (context) => ProfileScreen(),
         SearchScreen.routeName: (context) => SearchScreen(),
+        DetailBookScreen.routeName: (context) => DetailBookScreen(),
       },
     );
   }

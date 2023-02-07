@@ -1,3 +1,4 @@
+import 'package:ebook_tyt/screens/detailBookScreen.dart';
 import 'package:flutter/material.dart';
 import '../const/colors.dart';
 import '../utils/helper.dart';
@@ -72,16 +73,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(left: 10, right: 10),
-                                child: CategoryCard(
-                                  image: Image.asset(
-                                    Helper.getAssetName("hamburger2.jpg", "real"),
-                                    fit: BoxFit.cover,
+                                child: GestureDetector(
+                                  onTap: (){
+                                    Navigator.of(context)
+                                        .pushReplacementNamed(DetailBookScreen.routeName);
+                                  },
+                                  child: CategoryCard(
+                                    image: Image.asset(
+                                      Helper.getAssetName("hamburger2.jpg", "real"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    name: "Bậc Thầy Của Vũ Khí Hạt Nhân",
+                                    created: "Hôm qua",
+                                    chapter: 10,
+                                    author: "Cổ Liễu Chi",
+                                    categorys: ["Ngôn Tình", "Hài Hước", "Cổ Đại"],
                                   ),
-                                  name: "Bậc Thầy Của Vũ Khí Hạt Nhân",
-                                  created: "Hôm qua",
-                                  chapter: 10,
-                                  author: "Cổ Liễu Chi",
-                                  categorys: ["Ngôn Tình", "Hài Hước", "Cổ Đại"],
                                 ),
                               ),Padding(
                                 padding: const EdgeInsets.only(left: 10, right: 10),
@@ -425,12 +432,6 @@ class CategoryCard extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.height,
       height: 100,
-      // decoration: BoxDecoration(
-      //   border: Border.all(width: 3.0),
-      //   borderRadius: BorderRadius.all(
-      //       Radius.circular(20.0) //                 <--- border radius here
-      //   ),
-      // ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

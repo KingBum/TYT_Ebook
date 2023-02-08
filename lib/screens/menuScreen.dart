@@ -68,14 +68,15 @@ class _MenuScreenState extends State<MenuScreen> {
                           // Generate 100 widgets that display their index in the List.
                           children: widgetList.map((String value) {
                             return new Container(
-                              color: AppColor.blue,
+                              color: AppColor.placeholder,
                               margin: new EdgeInsets.all(4.0),
                               child: new Center(
                                 child: new Text(
                                   value,
                                   style: new TextStyle(
                                     fontSize: 16.0,
-                                    color: Colors.white,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),

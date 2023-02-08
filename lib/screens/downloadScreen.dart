@@ -27,11 +27,11 @@ class _DownloadScreenState extends State<DownloadScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Truyện Trên Thiết Bị - Offline", style: TextStyle(fontSize: 24),),
+                      Text("Truyện Trên Thiết Bị - Offline", style: TextStyle(fontSize: 24, color: AppColor.primary),),
                       SizedBox(height: 12,),
                       Row(
                         children: [
-                          Text("Đọc Gần Đây", style: TextStyle(fontSize: 16),),
+                          Text("Đọc Gần Đây", style: TextStyle(fontSize: 16, color: AppColor.primary),),
                           Spacer(),
                           Icon(Icons.arrow_forward)
                         ],
@@ -39,7 +39,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                       SizedBox(height: 16,),
                       Row(
                         children: [
-                          Text("Yêu Thích Gần Đây", style: TextStyle(fontSize: 16),),
+                          Text("Yêu Thích Gần Đây", style: TextStyle(fontSize: 16, color: AppColor.primary),),
                           Spacer(),
                           Icon(Icons.arrow_forward)
                         ],
@@ -47,7 +47,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                       SizedBox(height: 16,),
                       Row(
                         children: [
-                          Text("Tải Gần Đây - Đọc Offline", style: TextStyle(fontSize: 16),),
+                          Text("Tải Gần Đây - Đọc Offline", style: TextStyle(fontSize: 16, color: AppColor.primary),),
                           Spacer(),
                           Icon(Icons.arrow_forward)
                         ],

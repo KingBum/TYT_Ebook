@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "542047676304",
+    "project_id": "tyt-book",
+    "storage_bucket": "tyt-book.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542047676304:android:30efacfe2dcb5367cb7515",
+        "android_client_info": {
+          "package_name": "com.example.ebook_tyt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542047676304-8mq4nedq4nlnbfkf41irqb581c3jd62v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXHjjl1SYmyZ6KX4GJtyHW4UbWtLTbw9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "542047676304-8mq4nedq4nlnbfkf41irqb581c3jd62v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "542047676304-21k6llhm1oq6t4moscba327bn56jo45i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ebookTyt"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

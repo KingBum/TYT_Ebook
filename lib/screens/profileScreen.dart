@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ebook_tyt/screens/addBookScreen.dart';
 import 'package:ebook_tyt/screens/loginScreen.dart';
 import 'package:ebook_tyt/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -148,7 +149,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         SizedBox(height: 16,),
                         Text("TYT Writer", style: TextStyle(fontSize: 20),),
-                        CategoryCard(icon: Icon(Icons.library_add, size: 30,), name: "Tao truyen moi"),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddItem()));
+                            },
+                            child: CategoryCard(icon: Icon(Icons.library_add, size: 30,), name: "Tao truyen moi")),
                         CategoryCard(icon: Icon(Icons.library_books, size: 30,), name: "Truyen cua toi"),
                         Text("Thong Bao", style: TextStyle(fontSize: 20)),
                         CategoryCard(icon: Icon(Icons.notifications_active, size: 30,), name: "Thong bao cua toi"),

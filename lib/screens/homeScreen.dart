@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebook_tyt/screens/detailBookScreen.dart';
 import 'package:flutter/material.dart';
 import '../const/colors.dart';
@@ -13,6 +14,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final CollectionReference _Students =
+  FirebaseFirestore.instance.collection('books');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,99 +69,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   TabBarView(
                     children: [
-                      SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 10),
-                                child: GestureDetector(
-                                  onTap: (){
-                                    Navigator.of(context)
-                                        .pushReplacementNamed(DetailBookScreen.routeName);
-                                  },
-                                  child: CategoryCard(
-                                    image: Image.asset(
-                                      Helper.getAssetName("hamburger2.jpg", "real"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    name: "Bậc Thầy Của Vũ Khí Hạt Nhân",
-                                    created: "Hôm qua",
-                                    chapter: 10,
-                                    author: "Cổ Liễu Chi",
-                                    categorys: ["Ngôn Tình", "Hài Hước", "Cổ Đại"],
-                                  ),
-                                ),
-                              ),Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 10),
-                                child: CategoryCard(
-                                  image: Image.asset(
-                                    Helper.getAssetName("hamburger2.jpg", "real"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  name: "Bậc Thầy Của Vũ Khí Hạt Nhân",
-                                  created: "Hôm qua",
-                                  chapter: 10,
-                                  author: "Cổ Liễu Chi",
+                      StreamBuilder(
+                        stream: _Students.snapshots(),
+                        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                          if (streamSnapshot.hasData) {
+                            return ListView.builder(
+                              itemCount: streamSnapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                final DocumentSnapshot documentSnapshot =
+                                streamSnapshot.data!.docs[index];
+
+                                return CategoryCard(
+                                  image: Image.network(documentSnapshot['image']),
+                                  name: documentSnapshot['name'],
+                                  author: documentSnapshot['author'],
+                                  created: 'Hôm qua',
+                                  chapter: 2,
                                   categorys: ["Ngôn Tình", "Hài Hước", "Cổ Đại"],
-                                ),
-                              ),Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 10),
-                                child: CategoryCard(
-                                  image: Image.asset(
-                                    Helper.getAssetName("hamburger2.jpg", "real"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  name: "Bậc Thầy Của Vũ Khí Hạt Nhân",
-                                  created: "Hôm qua",
-                                  chapter: 10,
-                                  author: "Cổ Liễu Chi",
-                                  categorys: ["Ngôn Tình", "Hài Hước", "Cổ Đại"],
-                                ),
-                              ),Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 10),
-                                child: CategoryCard(
-                                  image: Image.asset(
-                                    Helper.getAssetName("hamburger2.jpg", "real"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  name: "Bậc Thầy Của Vũ Khí Hạt Nhân",
-                                  created: "Hôm qua",
-                                  chapter: 10,
-                                  author: "Cổ Liễu Chi",
-                                  categorys: ["Ngôn Tình", "Hài Hước", "Cổ Đại"],
-                                ),
-                              ),Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 10),
-                                child: CategoryCard(
-                                  image: Image.asset(
-                                    Helper.getAssetName("hamburger2.jpg", "real"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  name: "Bậc Thầy Của Vũ Khí Hạt Nhân",
-                                  created: "Hôm qua",
-                                  chapter: 10,
-                                  author: "Cổ Liễu Chi",
-                                  categorys: ["Ngôn Tình", "Hài Hước", "Cổ Đại"],
-                                ),
-                              ),Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 10),
-                                child: CategoryCard(
-                                  image: Image.asset(
-                                    Helper.getAssetName("hamburger2.jpg", "real"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  name: "Bậc Thầy Của Vũ Khí Hạt Nhân",
-                                  created: "Hôm qua",
-                                  chapter: 10,
-                                  author: "Cổ Liễu Chi",
-                                  categorys: ["Ngôn Tình", "Hài Hước", "Cổ Đại"],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                                );
+                              },
+                            );
+                          }
+
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
                       ),
                       SingleChildScrollView(
                         child: Column(

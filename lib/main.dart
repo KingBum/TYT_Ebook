@@ -84,7 +84,6 @@ class MyApp extends StatelessWidget {
           MenuScreen.routeName: (context) => MenuScreen(),
           ProfileScreen.routeName: (context) => ProfileScreen(),
           SearchScreen.routeName: (context) => SearchScreen(),
-          DetailBookScreen.routeName: (context) => DetailBookScreen(),
         },
       ),
     );

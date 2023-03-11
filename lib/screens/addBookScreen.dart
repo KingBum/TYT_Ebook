@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:ebook_tyt/screens/homeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,15 +26,7 @@ class _AddItemState extends State<AddItem> {
   FirebaseFirestore.instance.collection('books');
 
   String imageUrl = '';
-
-  // _callback()  async {
-  //     var _timer = Timer(Duration(microseconds: 500), () {
-  //       Navigator.pushReplacement(
-  //           context,
-  //           MaterialPageRoute(
-  //               builder: (BuildContext context) => super.widget));
-  //     });
-  // }
+  bool _isLoading = false;
 
   _selecImage(BuildContext context) async {
 
@@ -70,7 +63,9 @@ class _AddItemState extends State<AddItem> {
                     await referenceImageToUpload.putFile(File(file!.path));
                     print("Dong2");
                     imageUrl = await referenceImageToUpload.getDownloadURL();
-                    // _callback();
+                    setState(() {
+                      _isLoading = true;
+                    });
                     print("Dong3");
                   } catch (error) {
                     print("Loi roi ne");
@@ -104,7 +99,9 @@ class _AddItemState extends State<AddItem> {
                     await referenceImageToUpload.putFile(File(file!.path));
                     print("Dong2");
                     imageUrl = await referenceImageToUpload.getDownloadURL();
-                    // _callback();
+                    setState(() {
+                      _isLoading = true;
+                    });
                     print("Dong3");
                   } catch (error) {
                     print("Loi roi ne");
@@ -148,18 +145,6 @@ class _AddItemState extends State<AddItem> {
                   return null;
                 },
               ),
-              // TextFormField(
-              //   controller: _controllerAuthor,
-              //   decoration:
-              //   InputDecoration(hintText: 'Enter the Author of the item'),
-              //   validator: (String? value) {
-              //     if (value == null || value.isEmpty) {
-              //       return 'Please enter the item quantity';
-              //     }
-              //
-              //     return null;
-              //   },
-              // ),
               TextFormField(
                 controller: _controllerDesc,
                 decoration:
@@ -173,9 +158,9 @@ class _AddItemState extends State<AddItem> {
                 },
               ),
               SizedBox(height: 30,),
-              imageUrl.isEmpty ? Container() : SizedBox(
+              _isLoading == true ? SizedBox(
                   width: 120,
-                  child: Image.network(imageUrl)),
+                  child: Image.network(imageUrl)) : Container(),
               IconButton(
                   onPressed: () => _selecImage(context),
                   icon: Icon(Icons.upload)),
@@ -193,18 +178,20 @@ class _AddItemState extends State<AddItem> {
                       String itemName = _controllerName.text;
                       String itemAuthor = user?.displayName as String;
                       String itemDesc = _controllerDesc.text;
-
+                      Timestamp stamp = Timestamp.now();
                       //Create a Map of data
-                      Map<String, String> dataToSend = {
-                        'name': itemName,
-                        'author': itemAuthor,
-                        'desc': itemDesc,
-                        'image': imageUrl,
-                        'userid' : user?.uid as String
+                      Map<String, dynamic> dataToSend = {
+                        'name': itemName as String,
+                        'author': itemAuthor as String ,
+                        'desc': itemDesc as String,
+                        'image': imageUrl as String,
+                        'userid' : user?.uid as String,
+                        'createdAt':stamp
                       };
 
                       //Add a new item
                       _reference.add(dataToSend);
+                      Get.to(HomeScreen());
                     }
                   },
                   child: Text('Submit'))

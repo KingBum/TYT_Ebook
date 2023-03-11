@@ -1,28 +1,46 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebook_tyt/screens/HomeScreen.dart';
+import 'package:ebook_tyt/screens/editBookScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import '../const/colors.dart';
 import '../utils/helper.dart';
 
-class DetailBookScreen extends StatefulWidget {
-  const DetailBookScreen({Key? key}) : super(key: key);
-  static const routeName = "/detailBookScreen";
+class DetailBookScreen extends StatelessWidget {
+  DetailBookScreen(this.itemId, {Key? key}) : super(key: key) {
+    _reference =
+        FirebaseFirestore.instance.collection('books').doc(itemId);
+    _futureData = _reference.get();
+  }
+  String itemId;
+  late DocumentReference _reference;
 
-  @override
-  State<DetailBookScreen> createState() => _DetailBookScreenState();
-}
+  late Future<DocumentSnapshot> _futureData;
+  late Map data;
 
-class _DetailBookScreenState extends State<DetailBookScreen> {
   List<String> widgetList = ['Cổ Đại', 'Điền Văn', 'Nữ Cường'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 100.0, left: 20, right: 20),
-            child: Container(
-              width: Helper.getScreenWidth(context),
-              height: Helper.getScreenHeight(context),
+      body: FutureBuilder<DocumentSnapshot>(
+        future: _futureData,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Some error occurred ${snapshot.error}'));
+          }
+
+          if (snapshot.hasData) {
+            //Get the data
+            DocumentSnapshot documentSnapshot = snapshot.data;
+            data = documentSnapshot.data() as Map;
+            Timestamp stamp = data['createdAt'];
+            DateTime date = stamp.toDate();
+            final time = timeago.format(date);
+            //display the data
+            return Padding(
+              padding: const EdgeInsets.only(top: 32, right: 16, left: 16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -37,7 +55,7 @@ class _DetailBookScreenState extends State<DetailBookScreen> {
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50.0),
                                 child: Image.network(
-                                  "https://picsum.photos/300/300",
+                                  data['image'],
                                   fit: BoxFit.cover,
                                 ))),
                       ),
@@ -45,7 +63,7 @@ class _DetailBookScreenState extends State<DetailBookScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hoa Roi Cua Phat",
+                            data['name'],
                             style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -55,7 +73,7 @@ class _DetailBookScreenState extends State<DetailBookScreen> {
                             height: 10,
                           ),
                           Text(
-                            "Quoc Dat",
+                            data['author'],
                             style: TextStyle(fontSize: 16, color: AppColor.blue),
                           ),
                           SizedBox(
@@ -67,7 +85,7 @@ class _DetailBookScreenState extends State<DetailBookScreen> {
                               SizedBox(
                                 width: 15,
                               ),
-                              Text("6 gio truoc")
+                              Text('${time}')
                             ],
                           ),
                           SizedBox(
@@ -155,14 +173,19 @@ class _DetailBookScreenState extends State<DetailBookScreen> {
                         width: 12,
                       ),
                       Container(
-                        padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
+                            borderRadius: BorderRadius.circular(50),
                             border: Border.all(width: 2, color: AppColor.blue)),
-                        child: Icon(
-                          Icons.rate_review,
-                          color: AppColor.blue,
-                        ),
+                        child:
+                        IconButton(
+                            onPressed: () {
+                              //add the id to the map
+                              data['id'] = itemId;
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => EditItem(data)));
+                            },
+                            icon: Icon(Icons.rate_review,color: AppColor.blue,)),
                       ),
                       SizedBox(
                         width: 12,
@@ -177,6 +200,12 @@ class _DetailBookScreenState extends State<DetailBookScreen> {
                           color: AppColor.blue,
                         ),
                       ),
+                      Spacer(),
+                      IconButton(onPressed: () async {
+                        //Delete the item
+                        await _reference.delete();
+                        Get.to(() => const HomeScreen());
+                      }, icon: Icon(Icons.delete))
                     ],
                   ),
                   Row(
@@ -193,207 +222,19 @@ class _DetailBookScreenState extends State<DetailBookScreen> {
                       ),
                     ],
                   ),
-                  CategoryCard(
-                    title: "Ten Han Viet",
-                    subtitle: "Dao truong, nga bat huong",
-                  ),
-                  CategoryCard(
-                    title: "The Loai",
-                    subtitle:
-                        "Dao truong, nga bat huong Dao truong, nga bat huong Dao truong, nga bat huong",
-                  ),
-                  CategoryCard(
-                    title: "Tinh Trang Ban Goc",
-                    subtitle: "Dao truong, nga bat huong",
-                  ),
-                  CategoryCard(
-                    title: "CP",
-                    subtitle: "Dao truong, nga bat huong",
-                  ),
-                  CategoryCard(
-                    title: "Tom tat mot cau",
-                    subtitle: "Dao truong, nga bat huong",
-                  ),
+
                   SizedBox(
                     height: 20,
                   ),
-                  TextBook(
-                    text:
-                        "Tư tưởng đạo đức Hồ Chí Minh bắt nguồn từ truyền thống "
-                        "đạo đức của dân tộc Việt Nam đã được hình thành, phát triển trong suốt "
-                        "quá trình đấu tranh dựng nước và giữ nước; là sự vận dụng và phát triển "
-                        "sáng tạo tư tưởng đạo đức cách mạng của chủ nghĩa Mác – Lênin. "
-                        "Đó là sự tiếp thu có chọn lọc và phát triển những tinh hoa văn hóa, "
-                        "đạo đức của nhân loại, cả phương Đông và phương Tây, mà Người đã tiếp thu "
-                        "được trong quá trình hoạt động cách mạng đầy gian lao, thử thách và vô "
-                        "cùng phong phú vì mục tiêu giải phóng dân tộc, giải phóng giai cấp, "
-                        "giải phóng con người.Tư tưởng đạo đức Hồ Chí Minh là một hệ thống các quan điểm cơ bản và  toàn diện về đạo đức, bao gồm: vị trí, vai trò, nội dung của đạo đức; những phẩm chất đạo đức cơ bản và những nguyên tắc xây dựng nền đạo đức mới; yêu cầu rèn luyện đạo đức với mỗi người cách mạng.",
-                  )
+                  Text(data['desc'])
                 ],
               ),
-            ),
-          ),
-        ),
-        Positioned(
-          height: 120,
-          width: Helper.getScreenWidth(context),
-          top: 0,
-          right: 0,
-          child: Container(
-            decoration: BoxDecoration(
-            ),
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              child: Row(
-                children: [
-                  new IconButton(
-                    icon: new Icon(Icons.close,size: 30,),
-                    highlightColor: Colors.pink,
-                    onPressed: (){
-                      Navigator.of(context)
-                        .pushReplacementNamed(HomeScreen.routeName); },
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Text(
-                    "Chi Tiet Truyen",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 26,
-                        color: AppColor.primary),
-                  ),
-                  Spacer(),
-                  Icon(
-                    Icons.flag_outlined,
-                    size: 30,
-                    color: AppColor.placeholder,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Icon(
-                    Icons.share,
-                    size: 30,
-                    color: AppColor.placeholder,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-            bottom: 0,
-            left: 0,
-            child: Container(
-              color: Colors.white,
-              width: Helper.getScreenWidth(context),
-              height: 90,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.download,
-                        color: AppColor.blue,
-                      ),
-                      Text(
-                        "Tai Ve",
-                        style: TextStyle(color: AppColor.blue),
-                      )
-                    ],
-                  ),
-                  OutlinedButton(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "DOC TRUYEN",
-                        style: TextStyle(fontSize: 24, color: AppColor.blue),
-                      ),
-                    ),
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      side: BorderSide(width: 2.0, color: Colors.blue),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.favorite_border,
-                        color: AppColor.blue,
-                      ),
-                      Text(
-                        "Yeu Thich",
-                        style: TextStyle(color: AppColor.blue),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            )),
-      ]),
-    );
-  }
-}
+            );
+          }
 
-class CategoryCard extends StatelessWidget {
-  CategoryCard({
-    Key? key,
-    String? title,
-    String? subtitle,
-  })  : _title = title,
-        _subtitle = subtitle,
-        super(key: key);
-
-  final String? _title;
-  final String? _subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.height,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              _title! + ":  ",
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold),
-            ),
-            Container(
-                width: Helper.getScreenWidth(context) / 2,
-                child: Text(
-                  _subtitle!,
-                  style: TextStyle(fontSize: 16, color: AppColor.primary),
-                ))
-          ],
-        ));
-  }
-}
-
-class TextBook extends StatelessWidget {
-  TextBook({
-    Key? key,
-    String? text,
-  })  : _text = text,
-        super(key: key);
-
-  final String? _text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.height,
-      child: Text(_text!),
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }

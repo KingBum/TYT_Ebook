@@ -101,7 +101,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             GestureDetector(
                                 onTap: () => inputData(),
-                                child: Text('${user?.displayName}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: AppColor.blue),)),
+                                child: Container(
+                                    width: 110,
+                                    child: Text('${user?.displayName}', overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: AppColor.blue),))),
                             Spacer(),
                             ElevatedButton(onPressed: () async {
                               await authService.signOut();

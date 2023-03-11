@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../const/colors.dart';
 import '../utils/helper.dart';
 import '../widgets/customNavBar.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,8 +15,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final CollectionReference _Students =
-  FirebaseFirestore.instance.collection('books');
+  final _Students =
+  FirebaseFirestore.instance.collection('books').orderBy('createdAt', descending: true).limit(10);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,13 +80,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                 final DocumentSnapshot documentSnapshot =
                                 streamSnapshot.data!.docs[index];
 
+
+                                // Convert time
+                                Timestamp stamp = documentSnapshot['createdAt'];
+                                DateTime date = stamp.toDate();
+                                final time = timeago.format(date);
+
                                 return CategoryCard(
                                   image: Image.network(documentSnapshot['image']),
                                   name: documentSnapshot['name'],
                                   author: documentSnapshot['author'],
-                                  created: 'Hôm qua',
+                                  created: '${time}',
                                   chapter: 2,
                                   categorys: ["Ngôn Tình", "Hài Hước", "Cổ Đại"],
+                                  onclick: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => DetailBookScreen(
+                                            documentSnapshot.reference.id.toString())));
+                                  },
                                 );
                               },
                             );
@@ -263,6 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               chapter: 10,
                               author: "Cổ Liễu Chi 3",
                               categorys: ["Ngôn Tình", "Hài Hước", "Cổ Đại"],
+
                             ),
                           ],
                         ),
@@ -347,6 +360,7 @@ class CategoryCard extends StatelessWidget {
         required String created,
         required int chapter,
         required List<String> categorys,
+        Function()? onclick,
       })
       : _image = image,
         _name = name,
@@ -354,6 +368,7 @@ class CategoryCard extends StatelessWidget {
         _created = created,
         _chapter = chapter,
         _category = categorys,
+        _onclick = onclick,
         super(key: key);
 
   final String _name;
@@ -362,84 +377,88 @@ class CategoryCard extends StatelessWidget {
   final int _chapter;
   final String _author;
   final List<String> _category;
+  final Function()? _onclick;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.height,
-      height: 100,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(150),
-            child: Container(
-              width: 80,
-              height: 80,
-              child: _image,
+    return GestureDetector(
+        onTap: _onclick ,
+      child: Container(
+        width: MediaQuery.of(context).size.height,
+        height: 100,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(150),
+              child: Container(
+                width: 80,
+                height: 80,
+                child: _image,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flexible(
-                  child: Container(
-                    width: 240,
-                    child: Text(
-                      _name,
-                      overflow: TextOverflow.ellipsis,
-                      style: Helper.getTheme(context)
-                          .headline4
-                          ?.copyWith(color: AppColor.primary, fontSize: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Container(
+                      width: 240,
+                      child: Text(
+                        _name,
+                        overflow: TextOverflow.ellipsis,
+                        style: Helper.getTheme(context)
+                            .headline4
+                            ?.copyWith(color: AppColor.primary, fontSize: 20),
+                      ),
                     ),
                   ),
-                ),
-                Row(
-                  children : [
-                    Text(
-                      _created,
-                      style: Helper.getTheme(context)
-                          .headline5
-                          ?.copyWith(color: AppColor.primary, fontSize: 16),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Text(
-                        "+   $_author",
+                  Row(
+                    children : [
+                      Text(
+                        _created,
                         style: Helper.getTheme(context)
                             .headline5
                             ?.copyWith(color: AppColor.primary, fontSize: 16),
                       ),
-                    ),
-                  ]
-                ),
-                Text(
-                  "$_chapter chương",
-                  style: Helper.getTheme(context)
-                      .headline5
-                      ?.copyWith(color: AppColor.primary, fontSize: 16),
-                ),
-                Flexible(
-                  child: Container(
-                    width: 240,
-                    child: Row(
-                      children: [
-                        for ( var i in _category )
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20.0),
-                            child: new Text("$i".toString()),
-                          )
-                      ],
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          "+   $_author",
+                          style: Helper.getTheme(context)
+                              .headline5
+                              ?.copyWith(color: AppColor.primary, fontSize: 16),
+                        ),
+                      ),
+                    ]
                   ),
-                )
-              ],
-            ),
-          )
-        ],
-      )
+                  Text(
+                    "$_chapter chương",
+                    style: Helper.getTheme(context)
+                        .headline5
+                        ?.copyWith(color: AppColor.primary, fontSize: 16),
+                  ),
+                  Flexible(
+                    child: Container(
+                      width: 240,
+                      child: Row(
+                        children: [
+                          for ( var i in _category )
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20.0),
+                              child: new Text("$i".toString()),
+                            )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        )
+      ),
     );
   }
 }
